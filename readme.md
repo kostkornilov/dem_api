@@ -21,12 +21,11 @@ dem_analysis_api/
 **Установка**
 1. Клонируйте репозиторий
 ```bash
-git clone https://github.com/ваш_аккаунт/dem_analysis_api.git
+git clone https://github.com/kostkornilov/dem_api
 cd dem_analysis_api
 ```
 2. Установите зависимости
 ```bash
-Copy code
 pip install -e .
 ```
 
