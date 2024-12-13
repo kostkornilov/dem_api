@@ -22,7 +22,7 @@ dem_analysis_api/
 1. Клонируйте репозиторий
 ```bash
 git clone https://github.com/kostkornilov/dem_api
-cd dem_analysis_api
+cd dem_api
 ```
 2. Установите зависимости
 ```bash
