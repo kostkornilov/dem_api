@@ -1,6 +1,8 @@
 import ee
 import geemap
 import requests
+import os
+import shutil
 
 def initialize_gee(project: str):
     """Инициализация проекта в GEE."""
@@ -11,25 +13,31 @@ def initialize_gee(project: str):
         print(f"Ошибка инициализации: {e}")
         print("Попробуйте выполнить 'earthengine authenticate'.")
 
-def download_dem(lat, lon, buffer_degrees, output_path):
+def download_dem(lat, lon, buffer_degrees, filename, directory='example_output'):
     """Загрузка DEM (digital elevation model) из GEE."""
-    lon1, lat1, lon2, lat2 = lon - buffer_degrees, lat - buffer_degrees, lon + buffer_degrees, lat + buffer_degrees
-    region = ee.Geometry.Rectangle([lon1, lat1, lon2, lat2])
-    srtm = ee.Image("USGS/SRTMGL1_003").clip(region)
-    print("Геометрия области:", region.getInfo())
-    print("Проверка данных SRTM:", srtm.getInfo())
     try:
+        lon1, lat1, lon2, lat2 = lon - buffer_degrees, lat - buffer_degrees, lon + buffer_degrees, lat + buffer_degrees
+        # Создание папки, если ее нет
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        # Временный файл в текущей рабочей директории
+        temp_file = filename
+        # Определение региона
+        region = ee.Geometry.Rectangle([lon1, lat1, lon2, lat2])
+        # Загрузка данных SRTM
+        srtm = ee.Image("USGS/SRTMGL1_003").clip(region)
+        # Экспорт изображения во временный файл
         geemap.ee_export_image(
             srtm,
-            filename=output_path,
+            filename=temp_file,
             scale=30,
             region=region,
             file_per_band=False
         )
+        # Перемещение временного файла в кастомную директорию
+        output_path = os.path.join(directory, filename)
+        shutil.move(temp_file, output_path)
         print(f"DEM downloaded to {output_path}")
-    except requests.exceptions.JSONDecodeError as e:
-        # судя по всему в GEE есть лимит на размер данных, который превышен. Поэтому сервер как-то странно отвечает
-        # надо разобраться, как этой ошибки избежать. Судя по всему она возникает при повторном запросе
-        print("Failed to decode JSON response:", e)
+        
     except Exception as e:
-        print("An error occurred:", e)
+        print(f"Error downloading DEM: {e}")

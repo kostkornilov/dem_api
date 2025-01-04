@@ -3,11 +3,11 @@ from src.calculations import calculate_slope
 
 initialize_gee(project='projectomela')
 
-# Определим координаты и пути к файлам
+# Определим координаты и названия файлов
 lat, lon = 55.600, 37.172
 buffer = 0.05
-dem_path = "example_output/srtm.tif"
-slope_path = "example_output/slope.tif"
+dem_path = "srtm.tif"
+slope_path = "slope.tif"
 
 # Загрузим DEM
 download_dem(lat, lon, buffer, dem_path)
