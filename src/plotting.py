@@ -1,27 +1,16 @@
-import rasterio
-from rasterio.plot import show
 import matplotlib.pyplot as plt
+import rioxarray
 
-def plot_tif_files(srtm_path, slope_path):
-    # Open the SRTM file
-    with rasterio.open(srtm_path) as srtm_src:
-        srtm_data = srtm_src.read(1)
+def plot_dem_and_slope_files(dem_xarray, slope_xarray):
+    """Построить графики для DEM и уклона на одном графике."""
+    fig, axes = plt.subplots(1, 2, figsize=(20, 10))
     
-    # Open the slope file
-    with rasterio.open(slope_path) as slope_src:
-        slope_data = slope_src.read(1)
+    # Plot DEM
+    dem_xarray.plot(ax=axes[0])
+    axes[0].set_title('Digital Elevation Model (DEM)')
     
-    # Plot the SRTM and slope data side by side
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))
+    # Plot Slope
+    slope_xarray.plot(ax=axes[1])
+    axes[1].set_title('Slope')
     
-    # Plot SRTM data
-    ax1.set_title('SRTM')
-    show(srtm_data, ax=ax1, cmap='terrain')
-    
-    # Plot slope data
-    ax2.set_title('Slope')
-    show(slope_data, ax=ax2, cmap='viridis')
-    
-    plt.tight_layout()
     plt.show()
-

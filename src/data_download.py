@@ -3,6 +3,7 @@ import geemap
 import requests
 import os
 import shutil
+import rioxarray
 
 def initialize_gee(project: str):
     """Инициализация проекта в GEE."""
@@ -14,7 +15,7 @@ def initialize_gee(project: str):
         print("Попробуйте выполнить 'earthengine authenticate'.")
 
 def download_dem(lat, lon, buffer_degrees, filename, directory='example_output'):
-    """Загрузка DEM (digital elevation model) из GEE."""
+    """Загрузка DEM (digital elevation model) из GEE и возврат как xarray DataArray."""
     try:
         lon1, lat1, lon2, lat2 = lon - buffer_degrees, lat - buffer_degrees, lon + buffer_degrees, lat + buffer_degrees
         # Создание папки, если ее нет
@@ -39,5 +40,10 @@ def download_dem(lat, lon, buffer_degrees, filename, directory='example_output')
         shutil.move(temp_file, output_path)
         print(f"DEM downloaded to {output_path}")
         
+        # Загрузка DEM как xarray DataArray
+        dem_xarray = rioxarray.open_rasterio(output_path)
+        return dem_xarray
+        
     except Exception as e:
         print(f"Error downloading DEM: {e}")
+        return None

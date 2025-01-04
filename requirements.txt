@@ -3,3 +3,4 @@ geemap
 matplotlib
 gdal
 rasterio
+rioxarray
