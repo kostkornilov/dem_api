@@ -1,6 +1,5 @@
 import rasterio
 from rasterio.plot import show
-from examples.example_usage import dem_path, slope_path
 import matplotlib.pyplot as plt
 
 def plot_tif_files(srtm_path, slope_path):
@@ -26,5 +25,3 @@ def plot_tif_files(srtm_path, slope_path):
     plt.tight_layout()
     plt.show()
 
-# Example usage
-plot_tif_files(dem_path, slope_path)

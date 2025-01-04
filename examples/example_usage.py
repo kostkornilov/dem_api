@@ -1,5 +1,6 @@
 from src.data_download import initialize_gee, download_dem
 from src.calculations import calculate_slope
+from src.plotting import plot_tif_files
 import os
 
 initialize_gee(project='projectomela')
@@ -17,3 +18,5 @@ dem_path = os.path.join(directory, dem_file_name)
 slope_path = os.path.join(directory, slope_file_name)
 # Рассчитаем уклон
 calculate_slope(dem_path, slope_path)
+# Построим графики
+plot_tif_files(dem_path, slope_path)
