@@ -4,3 +4,4 @@ matplotlib
 gdal
 rasterio
 rioxarray
+xdem

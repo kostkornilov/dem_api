@@ -42,3 +42,36 @@ def plot_dem_and_feature_pairs(dem_xarray, features_dict):
         
         plt.tight_layout(pad=3.0)
         plt.show()
+
+def plot_terrain_attributes(dem, attributes, labels):
+    """Построить графики для результатов выполнения get_terrain_attributes."""
+    num_attributes = len(attributes)
+    rows = (num_attributes + 1) // 2
+    plt.figure(figsize=(12, 6 * rows))
+    plt_extent = [dem.bounds.left, dem.bounds.right, dem.bounds.bottom, dem.bounds.top]
+
+    cmaps = ["Greys_r", "Reds", "twilight", "RdGy_r", "Purples", "YlOrRd"]
+    vlims = [(None, None) for _ in range(num_attributes)]
+    if num_attributes > 3:
+        vlims[3] = [-2, 2]
+
+    for i in range(num_attributes):
+        plt.subplot(rows, 2, i + 1)
+        plt.imshow(attributes[i].squeeze(), cmap=cmaps[i % len(cmaps)], extent=plt_extent, vmin=vlims[i][0], vmax=vlims[i][1])
+        cbar = plt.colorbar()
+        cbar.set_label(labels[i])
+        plt.xticks([])
+        plt.yticks([])
+
+    plt.tight_layout()
+    plt.show()
+
+def plot_individual_attribute(attribute_xarray, title, cmap="viridis", cbar_title=""):
+    """Построить график для отдельного атрибута."""
+    attribute_xarray.plot(cmap=cmap)
+    plt.title(title)
+    plt.colorbar(label=cbar_title)
+    plt.show()
+
+def plot_attribute(dem):
+    pass
