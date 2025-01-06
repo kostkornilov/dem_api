@@ -5,7 +5,7 @@ import os
 import matplotlib.pyplot as plt
 from pyproj import CRS
 
-def calculate_terrain_attributes(dem_path, attributes, output_dir, scale=111120, dst_crs="EPSG:32637", **kwargs):
+def calculate_terrain_attributes(dem_path, attributes, output_dir, dst_crs="EPSG:32637", **kwargs):
     """Рассчитать несколько топографических атрибутов с использованием xdem и сохранить как TIFF файлы."""
     dem = xdem.DEM(dem_path,vcrs="WGS84")
     print(dem)
@@ -16,6 +16,7 @@ def calculate_terrain_attributes(dem_path, attributes, output_dir, scale=111120,
     # ЕСЛИ НЕ СДЕЛАТЬ ПЕРЕПРОЕКЦИЮ, то считаться будет плохо
     # Перепроекция сделана на EPSG:32637
     reprojected_dem = dem.reproject(crs=target_crs, res=30)
+    reprojected_dem.save(os.path.join(output_dir, "reprojected_dem.tif"))
     attribute_arrays = reprojected_dem.get_terrain_attribute(attributes, **kwargs)
 
     attribute_files = {}

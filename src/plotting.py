@@ -47,7 +47,7 @@ def plot_dem_and_feature_pairs(dem_xarray, features_dict):
 
 
 def plot_individual_attribute(attribute_xarray, title, cmap="viridis", cbar_title=""):
-    """Построить график для отдельного атрибута."""
+    """Построить график для отдельного атрибута (xarray)"""
     plt.figure(figsize=(10, 8))
     mappable = attribute_xarray.plot(cmap=cmap)
     plt.title(title)
@@ -64,42 +64,35 @@ def plot_attributes(attributes, attribute_rasters, dem_path):
     n_cols = 2
     # кол-во строк на графике
     n_rows = math.ceil(n_attributes / n_cols)
-    plt.figure(figsize=(10, 4 * n_rows))
-    # цвета для графиков
-    cmaps = ["terrain", "viridis", "plasma", "inferno", "magma", "cividis", "Greys", "Purples", "Blues", "Greens", "Oranges", "Reds"]
-    labels = attributes
-    # плоттинг!
     for i in range(n_attributes):
-        plt.subplot(n_rows, n_cols, i + 1)
-        # рисуем именно сам растровый объект
-        attribute_rasters[i].plot(cmap=cmaps[i % len(cmaps)])
-        plt.title(labels[i])
+        plt.figure(figsize=(10, 8))
+        attribute_rasters[i].plot(cmap="viridis")
+        plt.title(attributes[i])
         plt.xticks([])
         plt.yticks([])
+        plt.show()
 
-    plt.tight_layout()
-    plt.show()
-
-    if __name__ == "__main__":
-        # Example attributes and corresponding rasters
-        attributes = ["Elevation", "Slope", "Aspect", "Curvature", "Hillshade", "Roughness"]
-        
-        # Example paths to attribute rasters
-        attribute_raster_paths = [
-            "example_output/elevation.tif",
-            "example_output/slope.tif",
-            "example_output/aspect.tif",
-            "example_output/curvature.tif",
-            "example_output/hillshade.tif",
-            "example_output/roughness.tif"
-        ]
-        
-        # Load attribute rasters using rioxarray
-        attribute_rasters = [rioxarray.open_rasterio(path) for path in attribute_raster_paths]
-        
-        # Path to DEM file
-        dem_path = "example_output/dem.tif"
-        
-        # Call the function to plot attributes
-        plot_attributes(attributes, attribute_rasters, dem_path)
+if __name__ == "__main__":
+    # Example attributes and corresponding rasters
+    attributes = ["DEM", "Slope", "Aspect", "Curvature", "Hillshade", "Roughness"]
+    
+    # Example paths to attribute rasters
+    attribute_raster_paths = [
+        "example_output/reprojected_dem.tif",
+        "example_output/slope.tif",
+        "example_output/aspect.tif",
+        "example_output/curvature.tif",
+        "example_output/hillshade.tif",
+        "example_output/roughness.tif"
+    ]
+    
+    # Load attribute rasters using rioxarray
+    attribute_rasters = [xdem.DEM(path) for path in attribute_raster_paths]
+    # PROBLEM: открывается только DEM, через rioxarray открывается хрень пустая
+    
+    # Path to DEM file
+    dem_path = "example_output/reprojected_dem.tif"
+    
+    # Call the function to plot attributes
+    plot_attributes(attributes, attribute_rasters, dem_path)
 #     print(6\%6)
