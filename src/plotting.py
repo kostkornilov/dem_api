@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import rioxarray
+import xdem
+import math
 
 def plot_dem_and_slope_files(dem_xarray, slope_xarray):
     """Построить графики для DEM и уклона на одном графике."""
@@ -43,35 +45,61 @@ def plot_dem_and_feature_pairs(dem_xarray, features_dict):
         plt.tight_layout(pad=3.0)
         plt.show()
 
-def plot_terrain_attributes(dem, attributes, labels):
-    """Построить графики для результатов выполнения get_terrain_attributes."""
-    num_attributes = len(attributes)
-    rows = (num_attributes + 1) // 2
-    plt.figure(figsize=(12, 6 * rows))
-    plt_extent = [dem.bounds.left, dem.bounds.right, dem.bounds.bottom, dem.bounds.top]
 
-    cmaps = ["Greys_r", "Reds", "twilight", "RdGy_r", "Purples", "YlOrRd"]
-    vlims = [(None, None) for _ in range(num_attributes)]
-    if num_attributes > 3:
-        vlims[3] = [-2, 2]
+def plot_individual_attribute(attribute_xarray, title, cmap="viridis", cbar_title=""):
+    """Построить график для отдельного атрибута."""
+    plt.figure(figsize=(10, 8))
+    mappable = attribute_xarray.plot(cmap=cmap)
+    plt.title(title)
+    plt.colorbar(mappable, label=cbar_title)
+    plt.show()
 
-    for i in range(num_attributes):
-        plt.subplot(rows, 2, i + 1)
-        plt.imshow(attributes[i].squeeze(), cmap=cmaps[i % len(cmaps)], extent=plt_extent, vmin=vlims[i][0], vmax=vlims[i][1])
-        cbar = plt.colorbar()
-        cbar.set_label(labels[i])
+def plot_attributes(attributes, attribute_rasters, dem_path):
+    """Графики из Raster объектов."""
+    # Создаем DEM объект (из tif файла)
+    dem = xdem.DEM(dem_path)
+    # кол-во графиков
+    n_attributes = len(attributes) 
+    # кол-во столбцов на графике
+    n_cols = 2
+    # кол-во строк на графике
+    n_rows = math.ceil(n_attributes / n_cols)
+    plt.figure(figsize=(10, 4 * n_rows))
+    # цвета для графиков
+    cmaps = ["terrain", "viridis", "plasma", "inferno", "magma", "cividis", "Greys", "Purples", "Blues", "Greens", "Oranges", "Reds"]
+    labels = attributes
+    # плоттинг!
+    for i in range(n_attributes):
+        plt.subplot(n_rows, n_cols, i + 1)
+        # рисуем именно сам растровый объект
+        attribute_rasters[i].plot(cmap=cmaps[i % len(cmaps)])
+        plt.title(labels[i])
         plt.xticks([])
         plt.yticks([])
 
     plt.tight_layout()
     plt.show()
 
-def plot_individual_attribute(attribute_xarray, title, cmap="viridis", cbar_title=""):
-    """Построить график для отдельного атрибута."""
-    attribute_xarray.plot(cmap=cmap)
-    plt.title(title)
-    plt.colorbar(label=cbar_title)
-    plt.show()
-
-def plot_attribute(dem):
-    pass
+    if __name__ == "__main__":
+        # Example attributes and corresponding rasters
+        attributes = ["Elevation", "Slope", "Aspect", "Curvature", "Hillshade", "Roughness"]
+        
+        # Example paths to attribute rasters
+        attribute_raster_paths = [
+            "example_output/elevation.tif",
+            "example_output/slope.tif",
+            "example_output/aspect.tif",
+            "example_output/curvature.tif",
+            "example_output/hillshade.tif",
+            "example_output/roughness.tif"
+        ]
+        
+        # Load attribute rasters using rioxarray
+        attribute_rasters = [rioxarray.open_rasterio(path) for path in attribute_raster_paths]
+        
+        # Path to DEM file
+        dem_path = "example_output/dem.tif"
+        
+        # Call the function to plot attributes
+        plot_attributes(attributes, attribute_rasters, dem_path)
+#     print(6\%6)

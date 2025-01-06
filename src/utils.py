@@ -10,4 +10,10 @@ def create_bounding_box(lat, lon, buffer_degrees):
 
 def tiff_to_xarray(tiff_path):
     """Преобразовать TIFF файл в xarray DataArray."""
-    return rioxarray.open_rasterio(tiff_path)
+    data = rioxarray.open_rasterio(tiff_path)
+    print(f"Loaded {tiff_path}:")
+    print(f"Shape: {data.shape}")
+    print(f"CRS: {data.rio.crs}")
+    print(f"Nodata: {data.rio.nodata}")
+    print(f"Data: {data}")
+    return data
