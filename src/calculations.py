@@ -24,7 +24,18 @@ def calculate_terrain_attributes(dem_path, attributes, output_dir, dst_crs="EPSG
         output_path = os.path.join(output_dir, f"{attribute}.tif")
         print(attribute_array)
         print(type(attribute_array))
-        attribute_array.save(output_path)
+        data_array = attribute_array.to_xarray()
+        data_array.rio.write_crs(target_crs, inplace=True)
+        data_array.rio.write_transform(attribute_array.transform, inplace=True)
+        # Save as GeoTIFF
+        data_array.rio.to_raster(output_path, dtype="float32", nodata=None)
+        plt.figure(figsize=(10, 8))
+        mappable = data_array.plot(cmap='terrain')
+        plt.title(attribute)
+        plt.xlabel('X')
+        plt.ylabel('Y')
+        plt.colorbar(mappable, label=attribute)
+        plt.show()
     return attribute_arrays
 
 def calculate_slope(dem_path, output_dir):

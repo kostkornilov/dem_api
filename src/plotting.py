@@ -49,7 +49,8 @@ def plot_dem_and_feature_pairs(dem_xarray, features_dict):
 def plot_individual_attribute(attribute_xarray, title, cmap="viridis", cbar_title=""):
     """Построить график для отдельного атрибута (xarray)"""
     plt.figure(figsize=(10, 8))
-    mappable = attribute_xarray.plot(cmap=cmap)
+    print(attribute_xarray.data)
+    mappable = attribute_xarray.plot()
     plt.title(title)
     plt.colorbar(mappable, label=cbar_title)
     plt.show()
@@ -64,9 +65,11 @@ def plot_attributes(attributes, attribute_rasters, dem_path):
     n_cols = 2
     # кол-во строк на графике
     n_rows = math.ceil(n_attributes / n_cols)
+    # colours
+    cmaps = ["terrain", "viridis", "plasma", "inferno", "magma", "cividis", "Greys", "Purples", "Blues", "Greens", "Oranges", "Reds"]
     for i in range(n_attributes):
         plt.figure(figsize=(10, 8))
-        attribute_rasters[i].plot(cmap="viridis")
+        attribute_rasters[i].plot(cmap=cmaps[i])
         plt.title(attributes[i])
         plt.xticks([])
         plt.yticks([])
