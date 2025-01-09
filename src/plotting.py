@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import rioxarray
+import xdem
+import math
 
 def plot_dem_and_slope_files(dem_xarray, slope_xarray):
     """Построить графики для DEM и уклона на одном графике."""
@@ -42,3 +44,58 @@ def plot_dem_and_feature_pairs(dem_xarray, features_dict):
         
         plt.tight_layout(pad=3.0)
         plt.show()
+
+
+def plot_individual_attribute(attribute_xarray, title, cmap="viridis", cbar_title=""):
+    """Построить график для отдельного атрибута (xarray)"""
+    plt.figure(figsize=(10, 8))
+    print(attribute_xarray.data)
+    mappable = attribute_xarray.plot()
+    plt.title(title)
+    plt.colorbar(mappable, label=cbar_title)
+    plt.show()
+
+def plot_attributes(attributes, attribute_rasters, dem_path):
+    """Графики из Raster объектов."""
+    # Создаем DEM объект (из tif файла)
+    dem = xdem.DEM(dem_path)
+    # кол-во графиков
+    n_attributes = len(attributes) 
+    # кол-во столбцов на графике
+    n_cols = 2
+    # кол-во строк на графике
+    n_rows = math.ceil(n_attributes / n_cols)
+    # colours
+    cmaps = ["terrain", "viridis", "plasma", "inferno", "magma", "cividis", "Greys", "Purples", "Blues", "Greens", "Oranges", "Reds"]
+    for i in range(n_attributes):
+        plt.figure(figsize=(10, 8))
+        attribute_rasters[i].plot(cmap=cmaps[i])
+        plt.title(attributes[i])
+        plt.xticks([])
+        plt.yticks([])
+        plt.show()
+
+if __name__ == "__main__":
+    # Example attributes and corresponding rasters
+    attributes = ["DEM", "Slope", "Aspect", "Curvature", "Hillshade", "Roughness"]
+    
+    # Example paths to attribute rasters
+    attribute_raster_paths = [
+        "example_output/reprojected_dem.tif",
+        "example_output/slope.tif",
+        "example_output/aspect.tif",
+        "example_output/curvature.tif",
+        "example_output/hillshade.tif",
+        "example_output/roughness.tif"
+    ]
+    
+    # Load attribute rasters using rioxarray
+    attribute_rasters = [xdem.DEM(path) for path in attribute_raster_paths]
+    # PROBLEM: открывается только DEM, через rioxarray открывается хрень пустая
+    
+    # Path to DEM file
+    dem_path = "example_output/reprojected_dem.tif"
+    
+    # Call the function to plot attributes
+    plot_attributes(attributes, attribute_rasters, dem_path)
+#     print(6\%6)
