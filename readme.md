@@ -1,5 +1,7 @@
 ## Описание
-Библиотека для рассчета различных показателей, характеризующих рельеф
+Библиотека для рассчета различных показателей, характеризующих рельеф. 
+
+Фотографии со спутников загружаются из GEE, показатели рассчитываются с помощью xdem
 
 ## Структура репозитория 
 
@@ -13,6 +15,7 @@ dem_analysis_api/
 │   ├── data_download.py
 │   ├── calculations.py
 │   ├── utils.py
+|   ├── plotting.py
 └── examples/
     ├── example_usage.py
 ```
@@ -43,4 +46,21 @@ earthengine authenticate
 ## Пример использования
 
 Пример использования представлен в файле ```example_usage.py```
+
+## Рассчитываемые показатели
+
+Ниже приведен список показателей, которые можно рассчитать с помощью данной библиотеки:
+
+- slope
+- hillshade
+- aspect
+- curvature
+- planform_curvature
+- profile_curvature
+- maximum_curvature
+- topographic_position_index
+- terrain_ruggedness_index
+- roughness
+- rugosity
+```
 
