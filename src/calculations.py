@@ -25,7 +25,6 @@ def calculate_terrain_attributes(dem_path, attributes, output_dir, **kwargs):
     """Рассчитать несколько топографических атрибутов с использованием xdem и сохранить как TIFF файлы."""
     # Создаем DEM объект
     dem = xdem.DEM(dem_path, vcrs="WGS84")
-    print(dem)
     print('Coordinate system before reprojection', dem.vcrs)
     
     # Получаем координаты центра DEM
