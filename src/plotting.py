@@ -50,7 +50,7 @@ def plot_individual_attribute(attribute_xarray, title, cmap="viridis", cbar_titl
     """Построить график для отдельного атрибута (xarray)"""
     plt.figure(figsize=(10, 8))
     print(attribute_xarray.data)
-    mappable = attribute_xarray.plot()
+    mappable = attribute_xarray.squeeze().plot()
     plt.title(title)
     plt.colorbar(mappable, label=cbar_title)
     plt.show()
@@ -59,6 +59,7 @@ def plot_attributes(attributes, attribute_rasters, dem_path):
     """Графики из Raster объектов."""
     # Создаем DEM объект (из tif файла)
     dem = xdem.DEM(dem_path)
+    dem.plot(cmap='terrain')
     # кол-во графиков
     n_attributes = len(attributes) 
     # кол-во столбцов на графике
@@ -74,6 +75,19 @@ def plot_attributes(attributes, attribute_rasters, dem_path):
         plt.xticks([])
         plt.yticks([])
         plt.show()
+
+def plot_all_bands(xarray):
+    """Plot each band in an xarray on separate plots with names and different colormaps."""
+    n_bands = xarray.shape[0]
+    cmaps = ["terrain", "viridis", "plasma", "inferno", "magma", "cividis", "Greys", "Purples", "Blues", "Greens", "Oranges", "Reds"]
+    for i in range(n_bands):
+        plt.figure(figsize=(10, 8))
+        xarray[i].plot(cmap=cmaps[i % len(cmaps)])
+        plt.title(f"Band {xarray.band.values[i]}")
+        plt.xticks([])
+        plt.yticks([])
+        plt.show()
+
 
 if __name__ == "__main__":
     # Example attributes and corresponding rasters
