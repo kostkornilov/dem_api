@@ -62,5 +62,4 @@ earthengine authenticate
 - terrain_ruggedness_index
 - roughness
 - rugosity
-```
 
