@@ -21,7 +21,7 @@ def tiff_to_xarray(tiff_path):
     return data
 
 def combine_xarrays(xarrays, attributes):
-    """Combine multiple xarray DataArrays into a single xarray with multiple bands."""
+    """Объединить несколько xarray DataArray в один xarray с несколькими bands."""
     combined = xr.concat(xarrays, dim="band")
     combined = combined.assign_coords(band=attributes)
     return combined
