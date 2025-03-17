@@ -4,6 +4,7 @@ import json
 import os
 import shutil
 import rioxarray
+import xarray as xr
 
 def initialize_gee(project: str):
     """Инициализация проекта в GEE."""
@@ -28,7 +29,7 @@ def download_dem(geo_json_path, filename, directory='example_output'):
     directory (str, optional): Директория для сохранения файла. По умолчанию 'example_output'.
     
     Возвращает:
-    xarray.DataArray: DEM данные в формате xarray DataArray.
+    xarray.Dataset: DEM данные в формате xarray Dataset с измерением времени.
     """
     try:
         # Чтение GeoJSON файла
@@ -38,6 +39,7 @@ def download_dem(geo_json_path, filename, directory='example_output'):
         feature = geojson_data["features"][0]
         geometry = feature["geometry"]
         geom_type = geometry["type"]
+        time = feature["properties"].get("time", "unknown")
         
         # Задаем буфер по умолчанию для POINT
         default_buffer = 0.1
@@ -84,6 +86,7 @@ def download_dem(geo_json_path, filename, directory='example_output'):
         
         # Загрузка DEM как xarray DataArray
         dem_xarray = rioxarray.open_rasterio(output_path)
+        
         return dem_xarray
         
     except Exception as e:

@@ -76,14 +76,17 @@ def plot_attributes(attributes, attribute_rasters, dem_path):
         plt.yticks([])
         plt.show()
 
-def plot_all_bands(xarray):
-    """Plot each band in an xarray on separate plots with names and different colormaps."""
-    n_bands = xarray.shape[0]
-    cmaps = ["terrain", "viridis", "plasma", "inferno", "magma", "cividis", "Greys", "Purples", "Blues", "Greens", "Oranges", "Reds"]
-    for i in range(n_bands):
+def plot_all_bands(ds):
+    """Plot each band in an xarray.Dataset on separate plots with names and different colormaps.
+    
+    Assumes that each variable in the dataset corresponds to a band.
+    """
+    cmaps = ["terrain", "viridis", "plasma", "inferno", "magma", "cividis", "Greys",
+             "Purples", "Blues", "Greens", "Oranges", "Reds"]
+    for i, (band_name, da) in enumerate(ds.data_vars.items()):
         plt.figure(figsize=(10, 8))
-        xarray[i].plot(cmap=cmaps[i % len(cmaps)])
-        plt.title(f"Band {xarray.band.values[i]}")
+        da.plot(cmap=cmaps[i % len(cmaps)])
+        plt.title(band_name)
         plt.xticks([])
         plt.yticks([])
         plt.show()

@@ -8,13 +8,12 @@ import os
 initialize_gee(project='projectomela')
 
 # Определим координаты и названия файлов
-lat, lon = 55.600, 37.172
-buffer = 0.1
+geo_json_path = "example_input/area.geojson"
 dem_file_name = "srtm.tif"
 directory = "example_output"
 
 # Загрузим DEM из GEE (DEM сохранится в tiff файл в директории directory)
-dem_xarray = download_dem(lat, lon, buffer, dem_file_name, directory)
+dem_dataset = download_dem(geo_json_path, dem_file_name, directory)
 # Путь к DEM файлу
 dem_path = os.path.join(directory, dem_file_name)
 
@@ -33,5 +32,8 @@ attribute_xarrays = calculate_terrain_attributes(dem_path, attributes, directory
 # xarrays = [tiff_to_xarray(path) for path in attribute_files.values()]
 # Объединим xarray DataArrays в один xarray с несколькими каналами
 combined_xarray = combine_xarrays(attribute_xarrays, attributes)
-# Вывод кждого канала на отдельном графике
+# Добавляем измерение времени
+combined_xarray = combined_xarray.expand_dims(time=dem_dataset.time)
+
+# Вывод каждого канала на отдельном графике
 plot_all_bands(combined_xarray)
