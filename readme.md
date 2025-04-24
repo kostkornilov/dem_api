@@ -56,6 +56,10 @@ earthengine authenticate
   
 ![Высота](examples/pictures/DEM.png)
 
+- Уклон:
+
+![Уклон](examples/pictures/Slope.png)
+
 - Экспозиция:
 
 ![Экспозиция](examples/pictures/Aspect.png)

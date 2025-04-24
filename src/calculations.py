@@ -25,7 +25,7 @@ def get_utm_crs(lat, lon):
 def calculate_terrain_attributes(dem_path, attributes, **kwargs):
     """Рассчитать несколько топографических атрибутов с использованием xdem"""
     # Создаем DEM объект
-    dem = xdem.DEM(dem_path)
+    dem = xdem.DEM(dem_path, vcrs="WGS84")
     print('Shape of DEM', dem.shape)
     print(dem)
     print('Coordinate system before reprojection', dem.vcrs)
@@ -59,5 +59,7 @@ def calculate_terrain_attributes(dem_path, attributes, **kwargs):
     
     # Объединим xarray DataArrays в один xarray.Dataset
     combined_xarray = combine_xarrays(attribute_xarrays, attributes)
+    combined_xarray.attrs["resolution_m"] = 30
+    combined_xarray.attrs["coordinate_system"] = target_crs
 
     return combined_xarray
