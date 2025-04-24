@@ -30,7 +30,6 @@ def download_dem(geo_json_path, filename, directory='example_output'):
         # Чтение GeoJSON файла
         with open(geo_json_path, "r", encoding="utf-8") as f:
             geojson_data = json.load(f)
-        import os
 
         # Создание папки, если её нет
         if not os.path.exists(directory):
@@ -40,7 +39,8 @@ def download_dem(geo_json_path, filename, directory='example_output'):
         geometry = feature["geometry"]
         geom_type = geometry["type"]
         time = feature["properties"].get("time", "unknown")
-        
+        if time is not None:
+            print(f"В GeoJSON файле указано время: {time}'\nВремя не учитывается при загрузке DEM.")
         # Загрузка данных SRTM
         srtm = ee.Image("USGS/SRTMGL1_003")
         # Для точки
@@ -52,7 +52,7 @@ def download_dem(geo_json_path, filename, directory='example_output'):
 
             if sample is None:
                 raise ValueError("Не удалось получить значение DEM для точки.")
-            
+
             dem_value = sample.get('elevation').getInfo()
             print(f"DEM value at point ({lon}, {lat}): {dem_value}")
             
@@ -61,7 +61,7 @@ def download_dem(geo_json_path, filename, directory='example_output'):
             # Сздаем transform так, чтобы центр пикселя был в (lon, lat)
             transform = from_origin(lon - resolution/2, lat + resolution/2, resolution, resolution)
             output_path = os.path.join(directory, filename)
-            
+
             if os.path.exists(output_path):
                 os.remove(output_path)
 
