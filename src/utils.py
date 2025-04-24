@@ -1,6 +1,5 @@
 import rioxarray
 import xarray as xr
-import matplotlib.pyplot as plt
 
 def create_bounding_box(lat, lon, buffer_degrees):
     """Рассчет координат области."""

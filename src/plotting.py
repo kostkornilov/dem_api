@@ -1,7 +1,5 @@
 import matplotlib.pyplot as plt
-import rioxarray
 import xdem
-import math
 
 def plot_dem_and_slope_files(dem_xarray, slope_xarray):
     """Построить графики для DEM и уклона на одном графике."""
@@ -61,11 +59,7 @@ def plot_attributes(attributes, attribute_rasters, dem_path):
     dem = xdem.DEM(dem_path)
     dem.plot(cmap='terrain')
     # кол-во графиков
-    n_attributes = len(attributes) 
-    # кол-во столбцов на графике
-    n_cols = 2
-    # кол-во строк на графике
-    n_rows = math.ceil(n_attributes / n_cols)
+    n_attributes = len(attributes)
     # colours
     cmaps = ["terrain", "viridis", "plasma", "inferno", "magma", "cividis", "Greys", "Purples", "Blues", "Greens", "Oranges", "Reds"]
     for i in range(n_attributes):

@@ -4,7 +4,6 @@ import json
 import os
 import shutil
 import rioxarray
-import xarray as xr
 import numpy as np
 import rasterio
 from rasterio.transform import from_origin
@@ -55,9 +54,8 @@ def download_dem(geo_json_path, filename, directory='example_output'):
 
             dem_value = sample.get('elevation').getInfo()
             print(f"DEM value at point ({lon}, {lat}): {dem_value}")
-            
             # Переводим разрешение (30 м) в градусы (нужно для записи в tiff) (30/111320)
-            resolution = 30 / 111320  
+            resolution = 30 / 111320
             # Сздаем transform так, чтобы центр пикселя был в (lon, lat)
             transform = from_origin(lon - resolution/2, lat + resolution/2, resolution, resolution)
             output_path = os.path.join(directory, filename)
@@ -75,7 +73,6 @@ def download_dem(geo_json_path, filename, directory='example_output'):
                 transform=transform,
             ) as dst:
                 dst.write(np.array([[dem_value]], dtype=np.float32), 1)
-            
             print(f"Point DEM saved as TIFF at: {output_path}")
         
         elif geom_type == "Polygon":
