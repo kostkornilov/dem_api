@@ -52,7 +52,7 @@ earthengine authenticate
 
 ## Рассчитываемые показатели
 ### Пример:
-- Область с координатами центра lat, lon = 55.600, 37.172 и буфером в 0.1 градус
+- Область с координатами центра lat, lon = 45, 136 и буфером в 0.1 градус
 - Высота:
   
 ![Высота](examples/pictures/DEM.png)
@@ -67,14 +67,15 @@ earthengine authenticate
 
 Ниже приведен список показателей, которые можно рассчитать с помощью данной библиотеки:
 
-- slope
-- hillshade
-- aspect
-- curvature
-- planform_curvature
-- profile_curvature
-- maximum_curvature
-- topographic_position_index
-- terrain_ruggedness_index
-- roughness
-- rugosity
+- DEM (ЦМР, высота над уровнем моря)
+- slope (Уклон)
+- hillshade (Теневой рельеф)
+- aspect (Азимут, направление склона)
+- curvature (Кривизна)
+- planform_curvature (Плановая кривизна)
+- profile_curvature (Профильная кривизна)
+- maximum_curvature (Максимальная кривизна)
+- topographic_position_index (Индекс топографической позиции)
+- terrain_ruggedness_index (Индекс шероховатости рельефа)
+- roughness (Шероховатость рельефа)
+- rugosity (Ругозность)
