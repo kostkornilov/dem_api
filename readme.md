@@ -19,7 +19,8 @@ dem_analysis_api/
 │   ├── utils.py
 |   ├── plotting.py
 └── examples/
-    ├── example_usage.py
+    ├── example_usage.ipynb
+    ├── generate_plots.ipynb
 ```
 ## Использование
 
