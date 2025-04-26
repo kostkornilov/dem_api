@@ -1,8 +1,12 @@
+"""
+Файл для запуска парсера.
+"""
+
+import os
 from src.data_download import initialize_gee, download_dem
 from src.calculations import calculate_terrain_attributes
-import os
 
-def run(geo_json_path, output_directory='example_output'):
+def run(geojson_path):
     """
     Основная функция для запуска всего процесса.
     
@@ -12,7 +16,6 @@ def run(geo_json_path, output_directory='example_output'):
     initialize_gee(project='projectomela')
 
     # Определим координаты и названия файлов
-    geojson_path = str(geo_json_path)
     dem_file_name = "srtm.tif"
     directory = "example_output"
 
@@ -32,7 +35,7 @@ def run(geo_json_path, output_directory='example_output'):
 
 if __name__ == "__main__":
     # Путь к GeoJSON файлу
-    geo_json_path = "examples/sample.geojson"
+    JSON_PATH = "examples/sample.geojson"
     # Запускаем основную функцию
-    terrain_dataset = run(geo_json_path)
-    print(terrain_dataset)
+    terrain_dataset_example = run(JSON_PATH)
+    print(terrain_dataset_example)

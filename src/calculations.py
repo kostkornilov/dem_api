@@ -3,10 +3,11 @@
 
 Здесь реализуются функции для расчета топографических атрибутов на основе DEM.
 """
-import xdem
+
 from pyproj import CRS
 from pyproj.aoi import AreaOfInterest
 from pyproj.database import query_utm_crs_info
+import xdem
 from src.utils import combine_xarrays
 
 def get_utm_crs(lat, lon):

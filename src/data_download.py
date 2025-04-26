@@ -2,10 +2,10 @@
 Модуль для загрузки данных DEM из Google Earth Engine (GEE) в формате GeoTIFF.
 """
 
+import os
 import ee
 import geemap
 import json
-import os
 import shutil
 import rioxarray
 import numpy as np
@@ -109,7 +109,6 @@ def download_dem(geo_json_path, filename, directory='example_output'):
         # Загрузка DEM как xarray DataArray
         dem_xarray = rioxarray.open_rasterio(output_path)
         return dem_xarray
-        
     except Exception as e:
         print(f"Error downloading DEM: {e}")
         return None
