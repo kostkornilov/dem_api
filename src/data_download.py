@@ -1,3 +1,7 @@
+"""
+Модуль для загрузки данных DEM из Google Earth Engine (GEE) в формате GeoTIFF.
+"""
+
 import ee
 import geemap
 import json
@@ -74,23 +78,18 @@ def download_dem(geo_json_path, filename, directory='example_output'):
             ) as dst:
                 dst.write(np.array([[dem_value]], dtype=np.float32), 1)
             print(f"Point DEM saved as TIFF at: {output_path}")
-        
         elif geom_type == "Polygon":
             # Берем координаты внешнего кольца (первый элемент списка)
             coords = geometry["coordinates"][0]
             lons = [pt[0] for pt in coords]
             lats = [pt[1] for pt in coords]
             lon1, lat1, lon2, lat2 = min(lons), min(lats), max(lons), max(lats)
-            
             # Определение региона на основе вычисленных координат
             region = ee.Geometry.Rectangle([lon1, lat1, lon2, lat2])
-            
             # Обрезка SRTM по региону
             srtm_clipped = srtm.clip(region)
-            
             # Временный файл в текущей рабочей директории
             temp_file = filename
-            
             # Экспорт изображения во временный файл
             geemap.ee_export_image(
                 srtm_clipped,
@@ -105,13 +104,10 @@ def download_dem(geo_json_path, filename, directory='example_output'):
                 os.remove(output_path)
             shutil.move(temp_file, output_path)
             print(f"DEM downloaded to {output_path}")
-        
         else:
             raise ValueError(f"Unsupported geometry type: {geom_type}")
-        
         # Загрузка DEM как xarray DataArray
         dem_xarray = rioxarray.open_rasterio(output_path)
-
         return dem_xarray
         
     except Exception as e:
