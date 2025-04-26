@@ -4,7 +4,6 @@
 Здесь реализуются функции для расчета топографических атрибутов на основе DEM.
 """
 import xdem
-import os
 from pyproj import CRS
 from pyproj.aoi import AreaOfInterest
 from pyproj.database import query_utm_crs_info

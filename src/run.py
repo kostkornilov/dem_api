@@ -1,8 +1,6 @@
 from src.data_download import initialize_gee, download_dem
 from src.calculations import calculate_terrain_attributes
-from src.plotting import plot_all_bands
 import os
-from pathlib import Path
 
 def run(geo_json_path, output_directory='example_output'):
     """
@@ -19,7 +17,7 @@ def run(geo_json_path, output_directory='example_output'):
     directory = "example_output"
 
     # Загрузим DEM из GEE (DEM сохранится в .tiff файл в директории directory)
-    dem_xarray = download_dem(geojson_path, dem_file_name, directory)
+    _ = download_dem(geojson_path, dem_file_name, directory)
     # Путь к DEM файлу
     dem_path = os.path.join(directory, dem_file_name)
     attributes = [
