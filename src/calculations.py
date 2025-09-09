@@ -26,6 +26,7 @@ def get_utm_crs(lat, lon):
 
 def calculate_terrain_attributes(dem_path, attributes, path, **kwargs):
     """Рассчитать несколько топографических атрибутов с использованием xdem"""
+    attributes = list(attributes)  # создаём копию, чтобы не менять исходный список
     # Создаем DEM объект
     dem = xdem.DEM(dem_path, vcrs="WGS84")
     print('Shape of DEM', dem.shape)
